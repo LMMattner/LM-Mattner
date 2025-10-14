@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Umzugs- & Hilfe-Service — Landkreis Helmstedt</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111827;
+      --muted: rgba(17,24,39,0.6);
+      --card: #f9fafb;
+      --accent: #0ea5a4;
+    }
+    [data-theme='dark'] {
+      --bg: #0b1220;
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.75);
+      --card: #0f1724;
+      --accent: #06b6d4;
+    }
+    * { box-sizing: border-box }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .brand { display:flex; gap:12px; align-items:center; }
+    .logo {
+      width:56px; height:56px; border-radius:8px;
+      background:linear-gradient(135deg,var(--accent),#7dd3fc);
+      color:#fff; display:flex; align-items:center; justify-content:center;
+      font-weight:700;
+    }
+    main { padding:28px; max-width:980px; margin:0 auto; }
+    .grid { display:grid; grid-template-columns:1fr 340px; gap:20px; }
+    .card {
+      background: var(--card);
+      padding:18px; border-radius:12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    }
+    label { display:block; font-size:13px; margin-bottom:6px; }
+    input, select {
+      width:100%; padding:10px; border-radius:8px;
+      border:1px solid rgba(0,0,0,0.1);
+      background:transparent; color:var(--text);
+    }
+    .btn {
+      padding:10px 14px; border:none; border-radius:10px;
+      background:var(--accent); color:white; cursor:pointer;
+    }
+    .muted { color:var(--muted); font-size:13px; }
+    footer { text-align:center; padding:18px; color:var(--muted); }
+
+    /* Intro animation */
+    #introOverlay {
+      position:fixed; inset:0; background:var(--bg);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      z-index:9999; transition:opacity .6s ease;
+    }
+    #introOverlay.hidden { opacity:0; pointer-events:none; }
+    .box { width:180px; height:120px; position:relative; perspective:800px; }
+    .base {
+      width:100%; height:100%;
+      background:#d6b370; border-radius:6px;
+      box-shadow:0 8px 24px rgba(2,6,23,0.08);
+    }
+    .lid {
+      position:absolute; top:-18px; left:0;
+      width:100%; height:38px;
+      background:#b3873f; border-radius:6px;
+      transform-origin:10% 100%;
+      animation:openLid 1.2s ease forwards;
+    }
+    @keyframes openLid {
+      0% { transform:rotateX(0deg); }
+      100% { transform:rotateX(-130deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Intro Animation -->
+<div id="introOverlay">
+  <div class="box">
+    <div class="lid"></div>
+    <div class="base"></div>
+  </div>
+  <p style="margin-top:1rem;font-weight:600;">Willkommen – bitte warten …</p>
+</div>
+
+<header>
+  <div class="brand">
+    <div class="logo">UM</div>
+    <div>
+      <h1 style="margin:0;font-size:18px;">Umzugs- & Hilfe-Service</h1>
+      <div class="muted">Landkreis Helmstedt (PLZ 38350)</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="card" style="padding:6px 10px;">
+      <label style="font-size:13px;">Darkmode</label>
+      <input id="themeToggle" type="checkbox" />
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <h2>Angebot berechnen</h2>
+      <p class="muted">Gültig für alle Orte in der PLZ 38350 (Landkreis Helmstedt).</p>
+
+      <label>Ort</label>
+      <input id="city" type="text" placeholder="z. B. Helmstedt" value="Helmstedt" />
+
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <div style="flex:1">
+          <label>Stunden</label>
+          <input id="hours" type="number" min="1" value="2" />
+        </div>
+        <div style="flex:1">
+          <label>Personen</label>
+          <input id="helpers" type="number" min="1" value="1" />
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <div style="flex:1">
+          <label>Preis / Std (€)</label>
+          <input id="rate" type="number" min="0" value="25" />
+        </div>
+      </div>
+
+      <button id="calc" class="btn" style="margin-top:14px;">Berechnen</button>
+      <div id="result" style="margin-top:12px;"></div>
+
+      <p class="muted" style="margin-top:10px;">
+        Hinweis: Ich habe kein Fahrzeug / keinen Führerschein — Buchung nur als helfende Person.
+      </p>
+    </section>
+
+    <aside class="card">
+      <h3>Infos</h3>
+      <ul>
+        <li>Gültig: Landkreis Helmstedt (PLZ 38350)</li>
+        <li>Anfahrtskosten: 15 € pauschal</li>
+        <li>Alle Orte der PLZ 38350 sind erlaubt</li>
+      </ul>
+    </aside>
+  </div>
+</main>
+
+<footer>© 2025 Umzugs- & Hilfe-Service • Landkreis Helmstedt</footer>
+
+<script>
+  // --- Animation overlay ---
+  window.addEventListener('load', () => {
+    const overlay = document.getElementById('introOverlay');
+    setTimeout(() => overlay.classList.add('hidden'), 2000);
+    setTimeout(() => overlay.remove(), 3000);
+  });
+
+  // --- Theme toggle ---
+  const themeToggle = document.getElementById('themeToggle');
+  function applyTheme(dark) {
+    if (dark) document.documentElement.setAttribute('data-theme','dark');
+    else document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('dark', dark?'1':'0');
+  }
+  applyTheme(localStorage.getItem('dark')==='1');
+  themeToggle.checked = localStorage.getItem('dark')==='1';
+  themeToggle.addEventListener('change',()=>applyTheme(themeToggle.checked));
+
+  // --- Offer calculation ---
+  document.getElementById('calc').addEventListener('click', () => {
+    const hours = parseFloat(document.getElementById('hours').value)||0;
+    const helpers = parseInt(document.getElementById('helpers').value)||1;
+    const rate = parseFloat(document.getElementById('rate').value)||0;
+    const labor = hours * helpers * rate;
+    const total = labor + 15; // 15€ Anfahrt immer
+    document.getElementById('result').innerHTML =
+      `<p><strong>Gesamt:</strong> ${total.toFixed(2)} € (inkl. 15 € Anfahrt)</p>`;
+  });
+</script>
+</body>
+</html>
